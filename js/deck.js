@@ -118,7 +118,7 @@ var base = {
     blanks: function (card, hand) {
       return (card.suit === 'army' && !isArmyClearedFromPenalty(this, hand)) ||
         (card.suit === 'land' && card.name !== 'Mountain') ||
-        (card.suit === 'flame' && card.name !== 'Lightning') || isPhoenix(card);
+        (card.suit === 'flame' && card.name !== 'Lightning') || card.id === PHOENIX_PROMO;
     },
     relatedSuits: ['army', 'land', 'flame'],
     relatedCards: ['Mountain', 'Lightning']
@@ -158,7 +158,7 @@ var base = {
       return 10 * hand.countSuit('flood');
     },
     blanks: function (card, hand) {
-      return card.suit === 'flame' && card.name !== 'Lightning';
+      return (card.suit === 'flame' && card.name !== 'Lightning') || card.id === PHOENIX_PROMO;
     },
     relatedSuits: ['flood', 'flame'],
     relatedCards: ['Lightning']
@@ -1034,7 +1034,14 @@ var cursedHoard = {
     bonus: false,
     penalty: true,
     blanks: function (card, hand) {
-      return card.suit !== 'outsider' && hand.countSuit(card.suit) === 1 && card.id !== PHOENIX;
+      if (card.suit === 'outsider' || card.id === PHOENIX) {
+        return false;
+      }
+      if (card.id === PHOENIX_PROMO) {
+        return hand.countSuit(card.suit) === 1 || hand.countSuit('flame') === 1 || hand.countSuit('weather') === 1;
+      } else {
+        return hand.countSuit(card.suit) === 1;
+      }
     },
     relatedSuits: ['outsider'],
     relatedCards: []
@@ -1157,7 +1164,7 @@ var cursedHoard = {
       return (card.suit === 'army' && !isArmyClearedFromPenalty(this, hand)) ||
         (card.suit === 'building') ||
         (card.suit === 'land' && card.name !== 'Mountain') ||
-        (card.suit === 'flame' && card.name !== 'Lightning') || card.name === 'Phoenix';
+        (card.suit === 'flame' && card.name !== 'Lightning') || card.id === PHOENIX_PROMO;
     },
     relatedSuits: ['army', 'building', 'land', 'flame'],
     relatedCards: ['Mountain', 'Lightning']
@@ -3054,7 +3061,7 @@ var deck = {
     }
   },
   getCardById: function (id) {
-    if (typeof(id) == "number") {
+    if (typeof (id) == "number") {
       id = id.toString()
     }
 
