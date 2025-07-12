@@ -311,7 +311,8 @@ class Hand {
   }
 
   _cardPetrified(card) {
-    if (this.containsId(RRG_BASILISK) && !card.penaltyCleared && ![RRG_BASILISK, RRG_PHOENIX, PHOENIX, PHOENIX_PROMO].includes(card.id) && !this._cannotBeBlanked(card)) {
+    //if (this.containsId(RRG_BASILISK) && !card.penaltyCleared && ![RRG_BASILISK, RRG_PHOENIX, PHOENIX, PHOENIX_PROMO].includes(card.id) && !this._cannotBeBlanked(card)) {
+      if (this.containsId(RRG_BASILISK) && !this.getCardById(RRG_BASILISK).penaltyCleared && ![RRG_BASILISK, RRG_PHOENIX, PHOENIX, PHOENIX_PROMO].includes(card.id) && !this._cannotBeBlanked(card)) {
       if ((card.suit == 'army' && !isArmyClearedFromPenalty(card, this)) || 
           (card.suit == 'leader' && !isLeaderClearedFromPenalty(card, this)) || 
           (card.suit == 'beast' && !isBeastClearedFromPenalty(card, this)) || 
