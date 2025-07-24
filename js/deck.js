@@ -1627,7 +1627,7 @@ var rrgItems = {
     id: 'RG10',
     suit: 'army',
     name: 'Guard',
-    strength: 11,
+    strength: 18,
     bonus: true,
     penalty: false,
     /* clearsPenalty: function (card) {
@@ -1793,7 +1793,7 @@ var rrgItems = {
     suit: 'monster',
     name: 'Basilisk',
     replaces: 'FR37',
-    strength: 35,
+    strength: 34,
     bonus: false,
     penalty: true,
     relatedSuits: ['army', 'leader', 'beast'],
@@ -2000,7 +2000,7 @@ var rrgItems = {
     suit: 'weapon',
     name: 'Queens Sword',
     replaces: 'FR43',
-    strength: 6,
+    strength: 4,
     bonus: true,
     penalty: false,
     bonusScore: function (hand) {
@@ -2426,7 +2426,7 @@ var rrgItems = {
       if (!isBeastClearedFromPenalty(this, hand)) {
         penaltyCards += hand.countSuit('beast')
       }
-      return -5 * penaltyCards;
+      return -6 * penaltyCards;
     },
     blanks: function (card, hand) {
       return card.suit === 'flood';
@@ -2704,7 +2704,7 @@ var rrgExtItems = {
     suit: 'building',
     name: 'Bridge',
     replaces: 'RG02',
-    strength: 13,
+    strength: 12,
     bonus: true,
     penalty: false,
     bonusScore: function (hand) {
@@ -2784,7 +2784,7 @@ var rrgExtItems = {
     id: 'RGE05',
     suit: 'artifact',
     name: 'Talisman',
-    strength: 6,
+    strength: 4,
     bonus: true,
     bonusScore: function (hand) {
       var cards = hand.nonBlankedCards();
