@@ -137,6 +137,10 @@ li.land {
   background-color: var(--land-color);
 }
 
+li.landflame {
+  background: linear-gradient(to right, var(--land-color) 50%, var(--flame-color) 50%);
+}
+
 span.land {
   color: var(--land-color);
 }
@@ -253,6 +257,10 @@ li.weapon {
   background-color: var(--weapon-color);
 }
 
+li.weaponflame {
+  background: linear-gradient(to right, var(--weapon-color) 50%, var(--flame-color) 50%);
+}
+
 span.weapon {
   color: var(--weapon-color);
 }
@@ -263,6 +271,10 @@ span.weapon {
 
 li.artifact {
   background-color: var(--artifact-color);
+}
+
+li.artifactflame {
+  background: linear-gradient(to right, var(--artifact-color) 50%, var(--flame-color) 50%);
 }
 
 span.artifact {
@@ -283,6 +295,10 @@ span.wild {
 
 #wild-header {
   border-right: solid var(--wild-color) var(--header-border);
+}
+
+li.buildingflame {
+  background: linear-gradient(to right, var(--building-color) 50%, var(--flame-color) 50%);
 }
 
 li.building {

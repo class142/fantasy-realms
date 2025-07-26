@@ -329,7 +329,7 @@ class Hand {
   _petrifyCard(card) {
     card.petrifiedName = jQuery.i18n.prop('RGS02.name').replace('{name}', jQuery.i18n.prop(card.id + '.name'));
       card.petrified = true;
-      card.strength = 5;
+      card.strength = 12;
       card.suit = 'land';
       card.bonus = false;
       card.bonusScore = ()=>0;
@@ -437,7 +437,8 @@ class Hand {
     return (card.suit === 'undead' && (this.containsId(CH_LICH, true) || this.containsId(CH_NECROMANCER, true)))
       || card.id === CH_ANGEL
       || card.id === RRG_WARDEN
-      || (card.magic && this.containsId(CH_ANGEL, true) && this.getCardById(CH_ANGEL).actionData && this.getCardById(CH_ANGEL).actionData[0] === card.id);
+      || (card.magic && this.containsId(CH_ANGEL, true) && this.getCardById(CH_ANGEL).actionData && this.getCardById(CH_ANGEL).actionData[0] === card.id)
+      || hand.contains('Memorial') && (card.strength + (card.bonusScore && card.bonusScore(hand) || 0) - (card.penaltyScore && card.penaltyScore(hand) || 0) > 21);
   }
 
   clear() {
@@ -717,9 +718,7 @@ class CardInHand {
         if (selectedCard === undefined || selectedCard.unselectable || selectedCard.id == this.id) {
           this.actionData = undefined;
         } else {
-          this.blanks = function (card, hand) {
-            return card.name === selectedCard.name;
-          }
+          selectedCard.addSuits = ['flame'];
         }
       } else if (this.id === RRG_GUARD_DOGS) {
         this.suit = hand.containsId(RRG_WARDEN) ? 'army' : 'beast';

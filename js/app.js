@@ -361,8 +361,12 @@ function selectFromHand(id) {
     if (card.suit === 'flood' || card.suit === 'flame' || isPhoenix(card)) {
       defaultAction(actionId, id)
     }
-  } else if (actionId === CH_ANGEL || actionId === RRG_WAND || actionId === RRG_LIGHTNING) {
+  } else if (actionId === CH_ANGEL || actionId === RRG_WAND) {
       defaultAction(actionId, id)
+  } else if (actionId === RRG_LIGHTNING) {
+    if (['artifact', 'building', 'land', 'weapon'].includes(card.suit)) {
+      defaultAction(actionId, id)
+    }
   } else if (actionId === RRG_GUARD) {
     // (OLD from RRG_KNIGHT) 
     // if (card.suit === 'leader') {
@@ -563,9 +567,6 @@ function performBookOfChanges() {
 }
 
 function selectSuit(suit) {
-  if (deck.rrgEditionEnabled && suit === 'wizard') {
-    return
-  }
   click.play();
   bookOfChangesSelectedSuit = suit;
   performBookOfChanges();
