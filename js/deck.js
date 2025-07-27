@@ -1583,7 +1583,7 @@ var rrgItems = {
   },
   'RG07': {
     id: 'RG07',
-    suit: 'flame',
+    suit: 'building',
     name: 'Forge',
     replaces: 'FR18',
     strength: 8,
