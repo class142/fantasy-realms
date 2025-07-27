@@ -2920,8 +2920,13 @@ var rrgExtItems = {
     penalty: false,
     bonusScore: function (hand) {
       var bonus = 0;
-      bonus += 15 * (hand.countSuit('leader') + hand.countSuit('land'));
-      bonus += 30 * hand.countPetrified();
+      for (const card of hand.nonBlankedCards()) {
+        if (card.petrified) {
+          bonus += 30;
+        } else if (['land', 'leader'].includes(card.suit)) {
+          bonus += 15;
+        }
+      }
       return bonus;
     },
     relatedSuits: ['leader', 'land'],
@@ -3054,8 +3059,7 @@ var rrgExtItems = {
     strength: 4,
     bonus: true,
     bonusScore: function(hand) {
-      var buildings = deck.getCardsBySuit('building', hand.nonBlankedCards())?.building || [];
-      return 15 * (hand.countSuit('building') + hand.countModExcept('strength', 4, [...buildings,[this]]));
+      return 15 * hand.countModExcept('strength', 4, [this]);
     },
     penalty: false,
     relatedSuits: ['building'],
