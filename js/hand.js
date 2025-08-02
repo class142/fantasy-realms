@@ -265,6 +265,7 @@ class Hand {
     this._clearPenalties();
     this._applyPetrification();
     this._applyBlanking();
+    this._applyStrengthModifiers();
     for (const card of this.nonBlankedCards()) {
       score += card.score(this, discard);
     }
@@ -335,6 +336,17 @@ class Hand {
       card.bonusScore = ()=>0;
       card.penalty = false;
       card.penaltyScore = ()=>0;
+  }
+
+  _applyStrengthModifiers() {
+    for (const card of this.nonBlankedCards()) {
+      if (typeof card.modifyStrength === 'function') {
+        const newStrength = card.modifyStrength(this);
+        if (newStrength != null) {
+          card.strength = newStrength;
+        }
+      }
+    }
   }
 
   _applyBlanking() {
@@ -438,7 +450,7 @@ class Hand {
       || card.id === CH_ANGEL
       || card.id === RRG_WARDEN
       || (card.magic && this.containsId(CH_ANGEL, true) && this.getCardById(CH_ANGEL).actionData && this.getCardById(CH_ANGEL).actionData[0] === card.id)
-      || hand.contains('Memorial') && (card.strength + (card.bonusScore && card.bonusScore(hand) || 0) - (card.penaltyScore && card.penaltyScore(hand) || 0) > 21);
+      || (hand.contains('Memorial') && card.strength > this.getCardById(RRG_MEMORIAL).strength);
   }
 
   clear() {
