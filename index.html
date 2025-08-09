@@ -28,6 +28,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/card.css">
   <script src="js/jquery-3.6.0.min.js"></script>
   <script src="js/jquery.i18n.properties.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
@@ -36,9 +37,14 @@
   <script src="js/discard.js"></script>
   <script src="js/hand.js?v=0.1"></script>
   <script src="js/app.js?v=0.1"></script>
+  <script src="js/mmogame.js?v=0.1"></script>
+  <script src="js/html2canvas.min.js"></script>
 </head>
 
 <body>
+  <button id="draw-deck">Karte vom Stapel ziehen</button>
+<div id="discard-pile"></div>
+<div id="game-info"></div>
   <script id="cards-template" type="text/x-handlebars-template">
     {{#each suits}}
     <div class="card">
@@ -66,6 +72,84 @@
   </script>
   <script id="hand-template" type="text/x-handlebars-template">
     {{#each playerCards}}
+      <div id="card-{{id}}" class="card-single {{suit}}{{addSuits.[0]}}{{addSuits.[1]}}  {{#if blanked}}blanked{{/if}}" onclick="selectFromHand('{{id}}')">
+        <div class="card-heading {{suit}}{{addSuits.[0]}}{{addSuits.[1]}}">
+          <div class="card-value left">{{strength}}</div>
+          <span class="header-text ">
+            {{#if petrified}}
+                {{petrifiedName}}
+            {{else}}
+                {{#if impersonator}}
+                {{#if magic}}
+                    {{{i18n actionData.[0] '.name'}}}
+                {{else}}
+                    {{{i18n id '.name'}}}
+                {{/if}}
+                {{else}}
+                {{{i18n id '.name'}}}
+                {{/if}}
+            {{/if}}
+         </span>
+          <div class="card-value right">
+            {{#if bonusPoints}}
+              <span class="bonus">{{points}}</span>
+            {{else if penaltyPoints}}
+                <span class="penalty">{{points}}</span>
+            {{else}}
+              {{points}}
+            {{/if}}
+          </div>
+        </div>
+        <img src="./img/cards/{{id}}.jpg" alt="Card Image" class="card-image">
+        <div class="card-category-bar">
+          <div class="card-category {{suit}}{{addSuits.[0]}}{{addSuits.[1]}}">{{{i18n 'suit.' suit}}}</div>
+        </div>
+        <div class="card-text">
+            {{#if bonus}}
+            <div class="bonus">
+                <div class="bonus-header">
+                  <div class="bonus-title">BONUS:</div>
+                  {{#if bonusPoints}}
+                    {{#if (gte bonusPoints 0)}}
+                      <span class="float-right bonus bonus-value">+{{bonusPoints}}</span>
+                    {{else}}
+                      <span class="float-right penalty bonus-value">{{bonusPoints}}</span>
+                    {{/if}}
+                  {{/if}}
+                </div>
+                <div class="bonus-text">
+                    {{#if mirrored}}
+                        {{{i18n actionData.[0] '.bonus'}}}
+                    {{else}}
+                        {{{i18n id '.bonus'}}}
+                    {{/if}}
+                </div>
+            </div>
+            {{/if}}
+            {{#if penalty}}
+            <div class="penalty {{#if penaltyCleared}}cleared{{/if}}">
+                <div class="penalty-header">
+                  <div class="penalty-title">STRAFE:</div>
+                  {{#if penaltyPoints}}
+                    <span class="float-right penalty penalty-value">{{penaltyPoints}}</span>
+                  {{/if}}
+                </div>
+                <div class="penalty-text">
+                    {{#if card.penalty}}
+                        {{#if mirrored}}
+                        {{{i18n actionData.[0] '.penalty'}}}
+                        {{else}}
+                        {{{i18n id '.penalty'}}}
+                        {{/if}}
+                    {{else}}
+                        {{{i18n actionData.[0] '.penalty'}}}
+                    {{/if}}
+                </div>
+            </div>
+            {{/if}}
+      </div>
+    </div>
+      <!--
     <div id="card-{{id}}" class="card" onclick="selectFromHand('{{id}}')">
       <ul class="list-group">
         <li class="list-group-item {{suit}}{{addSuits.[0]}}{{addSuits.[1]}} {{#if blanked}}blanked{{/if}}">
@@ -124,7 +208,6 @@
               {{{i18n id '.penalty'}}}
             {{/if}}
           {{else}}
-            <!-- Doppelgänger penalty -->
             {{{i18n actionData.[0] '.penalty'}}}
           {{/if}}
           {{#if penaltyPoints}}
@@ -160,6 +243,7 @@
         {{/if}}
       </ul>
     </div>
+    -->
     {{/each}}
   </script>
   <script id="discard-template" type="text/x-handlebars-template">
@@ -264,6 +348,37 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
   }
+</script>
+
+<script>
+  function renderHand(hand) {
+    hand.forEach(card => {
+      addToView(card.id)
+    });
+  }
+
+  mmogame.onRenderHand(renderHand);
+  mmogame.onRenderDiscard(function (discardPile) {
+    const container = document.getElementById('discard-pile');
+    container.innerHTML = '';
+    discardPile.forEach(card => {
+      const div = document.createElement('div');
+      div.textContent = `${card.name} (${card.suit})`;
+      div.onclick = () => mmogame.drawFromDiscard(card.id);
+      container.appendChild(div);
+    });
+  });
+  mmogame.onUpdateInfo(function (info) {
+    document.getElementById('game-info').textContent =
+      `Stapel: ${info.deckSize} | Ablage: ${info.discardSize} | Am Zug: Spieler ${info.currentPlayer}`;
+  });
+  mmogame.onShowResults(function (results) {
+    alert('Spiel beendet! Ergebnisse: ' + JSON.stringify(results));
+  });
+
+  document.getElementById('draw-deck').onclick = () => mmogame.drawFromDeck();
+
+  mmogame.connect('wss://ws.rereadgames.de');
 </script>
 
 </html>

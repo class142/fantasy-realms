@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Test card</title>
+  <style>
+    @font-face {
+        font-family: 'dungeondepths';
+        src: url('./DungeonDepths.ttf');
+    }
+
+    .card {
+      width: 230px;
+      border-radius: 10px;
+      /*border: 5px solid var(--border-color, purple);*/
+      overflow: hidden;
+      font-family: sans-serif;
+      background-color: var(--border-color, purple);
+    }
+
+    .card-header {
+      background-color: var(--border-color, purple);
+      color: white;
+      text-align: center;
+      padding: 0;
+      font-weight: bold;
+      font-size: 1.4em;
+      position: relative;
+    }
+
+    .header-text {
+        float: center;
+        font-size: 0.5em;
+        vertical-align: middle;
+        line-height: normal;
+    }
+
+    .header-text, .card-category {
+        font-family: dungeondepths;
+    }
+
+    .card-value {
+      font-size: 1em;
+      background-color: #d6a647;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .card-value.left {
+      float: left;
+      border-radius: 5px 0 0 0;
+    }
+
+    .card-value.right {
+      float: right;
+      border-radius: 0 5px 0 0;
+    }
+
+    .card-image {
+      border-width: 3px 3px 0 3px;
+      border-style: solid;
+      border-color: #d6a647;
+      background-color: var(--border-color, purple);
+      margin: 0 15px;
+      width: 195px;
+      height: auto;
+    }
+
+    .card-category-bar {
+      margin-top: -4px;
+      background-color: #d6a647;
+      color: white;
+      text-align: center;
+      padding: 2px 30px;
+      font-weight: bold;
+    }
+
+    .card-category {
+        background-color: var(--border-color, purple);
+        padding: 2px 0;
+        font-size: 0.5em;
+        font-weight: lighter;
+    }
+
+    .card-text {
+      background-color: beige;
+      border-width: 0 3px 3px 3px;
+      border-color: #d6a647;
+      border-style: solid;
+      margin: 0 15px 12.5px 15px;
+      padding: 15px 5px;
+      font-size: 0.80em;
+      color: #333;
+      display: block;
+      text-align: center;
+    }
+
+    .bonus-header, .penalty-header {
+        font-weight: bold;
+    }
+
+    .card-text .bonus-text {
+      margin-bottom: 10px;
+    }
+
+    :root {
+  --land-color: #3b1d13;
+  --flood-color:  #41437c;
+  --weather-color: #a6bced;
+  --flame-color: #b44347;
+  --army-color: #312b2f;
+  --wizard-color: #e056a3;
+  --leader-color: #7b48a4;
+  --beast-color: #60a35c;
+  --monster-color: #c9ad3a;
+  --weapon-color: #878586;
+  --artifact-color: #d24e37;
+  --wild-color: #c6c2c3;
+  --building-color: #463153;
+  --outsider-color: #fba934;
+  --undead-color: #004e4a;
+  --cursed-item-color: #900c3f;
+  --header-border: 6px;
+}
+
+li.land {
+  background-color: var(--land-color);
+}
+
+span.land {
+  color: var(--land-color);
+}
+
+#land-header {
+  border-right: solid var(--land-color) var(--header-border);
+}
+
+li.flood {
+  background-color: var(--flood-color);
+}
+
+span.flood {
+  color: var(--flood-color);
+}
+
+#flood-header {
+  border-right: solid var(--flood-color) var(--header-border);
+}
+
+li.weather {
+  background-color: var(--weather-color);
+}
+
+span.weather {
+  color: var(--weather-color);
+}
+
+#weather-header {
+  border-right: solid var(--weather-color) var(--header-border);
+}
+
+li.flame {
+  background-color: var(--flame-color);
+}
+
+span.flame {
+  color: var(--flame-color);
+}
+
+#flame-header {
+  border-right: solid var(--flame-color) var(--header-border);
+}
+
+li.army {
+  background-color: var(--army-color);
+}
+
+span.army {
+  color: var(--army-color);
+}
+
+#army-header {
+  border-right: solid var(--army-color) var(--header-border);
+}
+
+li.wizard {
+  background-color: var(--wizard-color);
+}
+
+span.wizard {
+  color: var(--wizard-color);
+}
+
+#wizard-header {
+  border-right: solid var(--wizard-color) var(--header-border);
+}
+
+li.leader {
+  background-color: var(--leader-color);
+}
+
+span.leader {
+  color: var(--leader-color);
+}
+
+#leader-header {
+  border-right: solid var(--leader-color) var(--header-border);
+}
+
+li.beast {
+  background-color: var(--beast-color);
+}
+
+li.beastflame {
+  background: linear-gradient(to right, var(--beast-color) 50%, var(--flame-color) 50%);
+}
+
+li.beastflameweather {
+  background: linear-gradient(to right, var(--beast-color) 33%, var(--flame-color) 33%, var(--flame-color) 66%, var(--weather-color) 66%);
+}
+
+span.beast {
+  color: var(--beast-color);
+}
+
+#beast-header {
+  border-right: solid var(--beast-color) var(--header-border);
+}
+
+li.monster {
+  background-color: var(--monster-color);
+}
+
+span.monster {
+  color: var(--monster-color);
+}
+
+#monster-header {
+  border-right: solid var(--monster-color) var(--header-border);
+}
+
+li.weapon {
+  background-color: var(--weapon-color);
+}
+
+span.weapon {
+  color: var(--weapon-color);
+}
+
+#weapon-header {
+  border-right: solid var(--weapon-color) var(--header-border);
+}
+
+li.artifact {
+  background-color: var(--artifact-color);
+}
+
+span.artifact {
+  color: var(--artifact-color);
+}
+
+#artifact-header {
+  border-right: solid var(--artifact-color) var(--header-border);
+}
+
+li.wild {
+  background-color: var(--wild-color);
+}
+
+span.wild {
+  color: var(--wild-color);
+}
+
+#wild-header {
+  border-right: solid var(--wild-color) var(--header-border);
+}
+
+li.building {
+  background-color: var(--building-color);
+}
+
+span.building {
+  color: var(--building-color);
+}
+
+#building-header {
+  border-right: solid var(--building-color) var(--header-border);
+}
+
+li.outsider {
+  background-color: var(--outsider-color);
+}
+
+span.outsider {
+  color: var(--outsider-color);
+}
+
+#outsider-header {
+  border-right: solid var(--outsider-color) var(--header-border);
+}
+
+li.undead {
+  background-color: var(--undead-color);
+}
+
+span.undead {
+  color: var(--undead-color);
+}
+
+#undead-header {
+  border-right: solid var(--undead-color) var(--header-border);
+}
+  </style>
+</head>
+<body>
+
+<div class="card" style="--border-color: purple;">
+  <div class="card-header">
+    <div class="card-value left">15</div>
+    <span class="header-text">FÜRSTIN</span>
+    <div class="card-value right">15</div>
+  </div>
+  <img src="RG17.jpg" alt="Card Image" class="card-image">
+  <div class="card-category-bar">
+    <div class="card-category">ANFÜHRER</div>
+  </div>
+  <div class="card-text">
+    <div class="bonus-header">BONUS:</div>
+    <div class="bonus-text">+13 je <span class="army">Armee</span> oder <span class="monster">Monster</span></div>
+    <div class="penalty-header">STRAFE:</div>
+    <div class="penalty-text">-8 je anderen <span class="leader">Anführer</span></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -265,6 +265,7 @@ class Hand {
     this._clearPenalties();
     this._applyPetrification();
     this._applyBlanking();
+    this._applyStrengthModifiers();
     for (const card of this.nonBlankedCards()) {
       score += card.score(this, discard);
     }
@@ -311,7 +312,8 @@ class Hand {
   }
 
   _cardPetrified(card) {
-    if (this.containsId(RRG_BASILISK) && !card.penaltyCleared && ![RRG_BASILISK, RRG_PHOENIX, PHOENIX, PHOENIX_PROMO].includes(card.id) && !this._cannotBeBlanked(card)) {
+    //if (this.containsId(RRG_BASILISK) && !card.penaltyCleared && ![RRG_BASILISK, RRG_PHOENIX, PHOENIX, PHOENIX_PROMO].includes(card.id) && !this._cannotBeBlanked(card)) {
+    if (this.containsId(RRG_BASILISK) && !this.getCardById(RRG_BASILISK).penaltyCleared && ![RRG_BASILISK, RRG_PHOENIX, PHOENIX, PHOENIX_PROMO].includes(card.id) && !this._cannotBeBlanked(card)) {
       if ((card.suit == 'army' && !isArmyClearedFromPenalty(card, this)) || 
           (card.suit == 'leader' && !isLeaderClearedFromPenalty(card, this)) || 
           (card.suit == 'beast' && !isBeastClearedFromPenalty(card, this)) || 
@@ -328,12 +330,23 @@ class Hand {
   _petrifyCard(card) {
     card.petrifiedName = jQuery.i18n.prop('RGS02.name').replace('{name}', jQuery.i18n.prop(card.id + '.name'));
       card.petrified = true;
-      card.strength = 5;
+      card.strength = 12;
       card.suit = 'land';
       card.bonus = false;
       card.bonusScore = ()=>0;
       card.penalty = false;
       card.penaltyScore = ()=>0;
+  }
+
+  _applyStrengthModifiers() {
+    for (const card of this.nonBlankedCards()) {
+      if (typeof card.modifyStrength === 'function') {
+        const newStrength = card.modifyStrength(this);
+        if (newStrength != null) {
+          card.strength = newStrength;
+        }
+      }
+    }
   }
 
   _applyBlanking() {
@@ -436,7 +449,8 @@ class Hand {
     return (card.suit === 'undead' && (this.containsId(CH_LICH, true) || this.containsId(CH_NECROMANCER, true)))
       || card.id === CH_ANGEL
       || card.id === RRG_WARDEN
-      || (card.magic && this.containsId(CH_ANGEL, true) && this.getCardById(CH_ANGEL).actionData && this.getCardById(CH_ANGEL).actionData[0] === card.id);
+      || (card.magic && this.containsId(CH_ANGEL, true) && this.getCardById(CH_ANGEL).actionData && this.getCardById(CH_ANGEL).actionData[0] === card.id)
+      || (hand.contains('Memorial') && card.strength > this.getCardById(RRG_MEMORIAL).strength);
   }
 
   clear() {
@@ -468,7 +482,7 @@ class Hand {
   }
 
   _defaultLimit() {
-    return 7 + (cursedHoardSuits ? 1 : 0);
+    return 7 //+ (cursedHoardSuits ? 1 : 0);
   }
 
   _limitWithoutNecromancer() {
@@ -716,9 +730,7 @@ class CardInHand {
         if (selectedCard === undefined || selectedCard.unselectable || selectedCard.id == this.id) {
           this.actionData = undefined;
         } else {
-          this.blanks = function (card, hand) {
-            return card.name === selectedCard.name;
-          }
+          selectedCard.addSuits = ['flame'];
         }
       } else if (this.id === RRG_GUARD_DOGS) {
         this.suit = hand.containsId(RRG_WARDEN) ? 'army' : 'beast';
@@ -747,4 +759,8 @@ class CardInHand {
     return this.blanked ? 0 : (this.strength + this.bonusPoints + this.penaltyPoints);
   }
 
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = Hand;
 }

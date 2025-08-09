@@ -1,0 +1,228 @@
+@font-face {
+  font-family: 'dungeondepths';
+  src: url('./DungeonDepths.ttf');
+}
+
+.card-single {
+  float: left;
+  width: 230px;
+  height: 330px;
+  border-radius: 10px;
+  /*border: 5px solid var(--border-color, purple);*/
+  overflow: hidden;
+  margin: 5px;
+  font-family: sans-serif;
+}
+
+.card-heading {
+  color: white;
+  padding: 0;
+  font-weight: bold;
+  font-size: 1.4em;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-text {
+  font-size: 0.425em;
+  flex: 1;
+  max-width: 75%;
+}
+
+.header-text,
+.card-category {
+  font-family: dungeondepths;
+}
+
+.card-value {
+  font-size: 1em;
+  background-color: #d6a647;
+  color: white;
+  padding: 5px 2px;
+  border-radius: 5px;
+  width: 20%;
+}
+
+.card-value.left {
+  float: left;
+  border-radius: 5px 0 0 0;
+}
+
+.card-value.right {
+  float: right;
+  border-radius: 0 5px 0 0;
+}
+
+.card-image {
+  border-width: 3px 3px 0 3px;
+  border-style: solid;
+  border-color: #d6a647;
+  margin: 0 15px;
+  width: 200px;
+  height: 140px;
+  overflow: hidden;
+}
+
+.card-category-bar {
+  background-color: #d6a647;
+  color: white;
+  text-align: center;
+  padding: 2px 30px;
+  font-weight: bold;
+}
+
+.card-category {
+  padding: 2px 0;
+  font-size: 0.5em;
+  font-weight: lighter;
+}
+
+.card-text {
+  background-color: beige;
+  border-width: 0 3px 3px 3px;
+  border-color: #d6a647;
+  border-style: solid;
+  margin: 0 15px 12.5px 15px;
+  padding: 10px 5px;
+  font-size: 0.625em;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  text-align: center;
+  height: 115px;
+}
+
+.bonus-value, .penalty-value {
+  position: absolute;
+  margin-left: 150px;
+}
+
+.bonus-header,
+.penalty-header {
+  font-weight: bold;
+  font-size: 1.05em;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-text .bonus-text {
+  margin-bottom: 10px;
+}
+
+#hand div.blanked {
+  opacity: 80%;
+  filter: grayscale(100%) blur(2px);
+}
+
+/*
+  --land-color: #3b1d13;
+  --flood-color:  #41437c;
+  --weather-color: #a6bced;
+  --flame-color: #b44347;
+  --army-color: #312b2f;
+  --wizard-color: #e056a3;
+  --leader-color: #7b48a4;
+  --beast-color: #60a35c;
+  --monster-color: #c9ad3a;
+  --weapon-color: #878586;
+  --artifact-color: #d24e37;
+  --wild-color: #c6c2c3;
+  --building-color: #463153;
+  --outsider-color: #fba934;
+  --undead-color: #004e4a;
+  --cursed-item-color: #900c3f;
+*/
+
+span.or {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.05em;
+  margin: 0.10rem 0;
+}
+
+.or::before,
+.or::after {
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid #d6a647;
+  margin: 0 5px;
+}
+
+.or::before {
+  margin-right: 10px;
+}
+
+.or::after {
+  margin-left: 10px;
+}
+
+.or span {
+  white-space: nowrap;
+}
+
+div.army {
+  background-color: var(--army-color);
+}
+
+div.land {
+  background-color: var(--land-color);
+}
+
+div.flame {
+  background-color: var(--flame-color);
+}
+
+div.flood {
+  background-color: var(--flood-color);
+}
+
+div.weather {
+  background-color: var(--weather-color);
+}
+
+div.wizard {
+  background-color: var(--wizard-color);
+}
+
+div.leader {
+  background-color: var(--leader-color);
+}
+
+div.weapon {
+  background-color: var(--weapon-color);
+}
+
+div.artifact {
+  background-color: var(--artifact-color);
+}
+
+div.wild {
+  background-color: var(--wild-color);
+}
+
+div.building {
+  background-color: var(--building-color);
+}
+
+div.outsider {
+  background-color: var(--outsider-color);
+}
+
+div.beast {
+  background-color: var(--beast-color);
+}
+
+div.beastflame {
+  background: linear-gradient(to right, var(--beast-color) 50%, var(--flame-color) 50%);
+}
+
+div.monster {
+  background-color: var(--monster-color);
+}
