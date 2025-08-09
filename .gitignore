@@ -1,3 +1,5 @@
 fragen.txt
 img/cards
 img/cards/*
+js/node_modules
+js/node_modules/*
