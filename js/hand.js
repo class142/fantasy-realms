@@ -134,6 +134,26 @@ class Hand {
     }
     return count;
   }
+  
+  countSuitBlanked(suitName) {
+    var count = 0;
+    for (const card of this.blankedCards()) {
+      if (card.suit === suitName || (Array.isArray(card.addSuits) && card.addSuits.includes(suitName))) {
+        count++;
+      }
+    }
+    return count;
+  }
+  
+  countSuitBlankedExcluding(suitName, excludingCardId) {
+    var count = 0;
+    for (const card of this.blankedCards()) {
+      if (card.suit === suitName || (Array.isArray(card.addSuits) && card.addSuits.includes(suitName)) && card.id !== excludingCardId) {
+        count++;
+      }
+    }
+    return count;
+  }
 
   countSuitDistinctCardNames(suitName) {
     var count = 0;
@@ -199,6 +219,9 @@ class Hand {
       count++;
     }
     if (hand.contains('Water Elemental') && excludingCard != 'Water Elemental') {
+      count++;
+    }
+    if (hand.contains('Hybrid Creature') && excludingCard != 'Hybrid Creature') {
       count++;
     }
     return count;
@@ -734,6 +757,11 @@ class CardInHand {
         }
       } else if (this.id === RRG_GUARD_DOGS) {
         this.suit = hand.containsId(RRG_WARDEN) ? 'army' : 'beast';
+      } else if (this.id === RRG_WEREWOLF) {
+        var handContainsSun = hand.containsId(RRG_SUN);
+        this.suit = handContainsSun ? 'army' : 'monster';
+        this.strength = handContainsSun ? 10 : 29;
+        this.penaltyCleared = handContainsSun;
       }
     }
   }
